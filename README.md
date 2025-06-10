@@ -1,0 +1,1 @@
+# AIO2025.M1W01.Understanding_the_Order_of_Executionin_in_SQL
