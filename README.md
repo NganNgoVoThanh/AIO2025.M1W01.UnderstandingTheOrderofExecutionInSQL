@@ -6,7 +6,7 @@ SQL (Structured Query Language) is a powerful language used to query and manipul
 
 ---
 
-## 🔄 1. Real Execution Flow (10 Steps)
+## 🔄 1. Real Execution Flow
 
 | Step | Clause | Description |
 |------|-------------------------|----------------------------------------------|
