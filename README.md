@@ -1,10 +1,8 @@
 # AIO2025.M1W01.Blog
 
+# Understanding The Order of Execution In SQL
 
-# Understanding The Order of Execution On SQL
-
-
-SQL (Structured Query Language) is a powerful language used to query and manipulate data in relational database management systems. SQL statements are written as `SELECT … FROM … WHERE …`, but executed helps you **filter**, **group**, and **sort data correctly — and optimize** your queries effectively.
+SQL (Structured Query Language) is a powerful language used to query and manipulate data in relational database management systems. SQL statements are written as `SELECT … FROM … WHERE …`, but understanding the actual execution order helps you **filter**, **group**, and **sort data correctly — and optimize** your queries effectively.
 
 ---
 
@@ -26,18 +24,19 @@ SQL (Structured Query Language) is a powerful language used to query and manipul
 
 ---
 
-
 ## 2. Window Functions
 
-A **window function** performs calculations across a set of rows (a “window”) that are related to the current row. Unlike aggregate functions (`SUM`, `AVG`, etc.) that collapse rows, window functions **retain individual rows** while adding analytical results.
+A **window function** performs calculations across a set of rows (a "window") that are related to the current row. Unlike aggregate functions (`SUM`, `AVG`, etc.) that collapse rows, window functions **retain individual rows** while adding analytical results.
+
 ### 🔹 Syntax
-### 🔹 Syntax
+
 ```sql
 <function>(<expression>) OVER (
     PARTITION BY <column>
     ORDER BY <column>
     ROWS BETWEEN ... AND ...
-)```
+)
+```
 
 ### Common Window Functions
 
@@ -72,7 +71,7 @@ So even though `SELECT` is written first, the **engine executes `FROM` first** u
 
 ## 4. Example Query
 
-### Minimal SQL Example – Whole‐Kernel Yield 
+### Minimal SQL Example – Whole-Kernel Yield 
 
 This snippet shows how to calculate **% Whole** for each production line on a given day using just two arithmetic formulas and the basic SQL clauses covered in class.
 
@@ -103,7 +102,8 @@ GROUP BY
     line_id
 ORDER BY
     prod_date,
-    line_id;```
+    line_id;
+```
 
 ### Logical Execution Order
 
@@ -113,7 +113,6 @@ ORDER BY
 4. **GROUP BY `prod_date`, `line_id`** – aggregate rows per date and line.  
 5. **SELECT** – return summed grams and compute `pct_whole`.  
 6. **ORDER BY** – sort the final result.
-
 
 ## 5. Key Takeaways
 
