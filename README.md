@@ -87,7 +87,7 @@ SELECT
     SUM(whole_g)  AS whole_g,        -- total whole-kernel weight (g)
     SUM(whole_g) / SUM(kernel_g) AS pct_whole   -- ③ %Whole
 FROM (
-    /* 1️⃣  Row-level calculations (two formulas) */
+    /* Row-level calculations (two formulas) */
     SELECT
         prod_date,
         line_id,
