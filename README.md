@@ -8,7 +8,7 @@ SQL (Structured Query Language) is a powerful language used to query and manipul
 
 ---
 
-## 🔄 1. Real Execution Flow
+## 1. Real Execution Flow
 
 | Step | Clause | Description |
 |------|-------------------------|----------------------------------------------|
@@ -24,21 +24,41 @@ SQL (Structured Query Language) is a powerful language used to query and manipul
 
 > *Note*: Some databases evaluate **window functions** right after `SELECT` and before `DISTINCT`.
 
-## 🔄 2. Window Functions
+---
+
+
+## 2. Window Functions
 
 A **window function** performs calculations across a set of rows (a “window”) that are related to the current row. Unlike aggregate functions (`SUM`, `AVG`, etc.) that collapse rows, window functions **retain individual rows** while adding analytical results.
+### 🔹 Syntax
 ### 🔹 Syntax
 ```sql
 <function>(<expression>) OVER (
     PARTITION BY <column>
     ORDER BY <column>
     ROWS BETWEEN ... AND ...
- )
+)```
+
+### Common Window Functions
+
+| Category | Functions |
+|----------|-----------|
+| **Ranking / Ordering** | `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `NTILE()` |
+| **Cumulative / Moving Stats** | `SUM()`, `AVG()`, `COUNT()`, `MIN()`, `MAX()` … with `OVER (…)` |
+| **Lag & Lead Comparisons** | `LAG()`, `LEAD()`, `FIRST_VALUE()`, `LAST_VALUE()` |
+| **Percentiles & Distribution** | `PERCENT_RANK()`, `CUME_DIST()` |
+
+### Window vs. Traditional Aggregates
+
+| Traditional Aggregate (`GROUP BY`) | Window Function |
+|-----------------------------------|-----------------|
+| Collapses many rows → 1 row per group | **Keeps every row** in the result set |
+| Cannot show detail **and** aggregate together | Shows detail **plus** aggregated values side-by-side |
+| Aggregate result unavailable in `WHERE` | Can appear directly in `SELECT`, `ORDER BY`, `HAVING` |
 
 ---
 
-
-## 🤔 2. Why is the function written first but the engine reads differently?
+## 3. Why is the function written first but the engine reads differently?
 
 SQL is a **declarative language**: you describe *what* result you want, not *how* to compute it.
 
@@ -50,13 +70,13 @@ When the database runs your query:
 
 So even though `SELECT` is written first, the **engine executes `FROM` first** under the hood.
 
-## 📌 3. Example Query
+## 4. Example Query
 
-# Minimal SQL Example – Whole‐Kernel Yield 
+### Minimal SQL Example – Whole‐Kernel Yield 
 
 This snippet shows how to calculate **% Whole** for each production line on a given day using just two arithmetic formulas and the basic SQL clauses covered in class.
 
-## SQL Script
+### SQL Script
 
 ```sql
 /* Goal: compute %Whole per line for a single production date */
@@ -83,10 +103,9 @@ GROUP BY
     line_id
 ORDER BY
     prod_date,
-    line_id;
+    line_id;```
 
-
-## Logical Execution Order
+### Logical Execution Order
 
 1. **FROM `quality_data`** – read the base table.  
 2. **Column arithmetic** – calculate `kernel_g` and `whole_g` for each row (two formulas).  
@@ -94,3 +113,10 @@ ORDER BY
 4. **GROUP BY `prod_date`, `line_id`** – aggregate rows per date and line.  
 5. **SELECT** – return summed grams and compute `pct_whole`.  
 6. **ORDER BY** – sort the final result.
+
+
+## 5. Key Takeaways
+
+- **Memorize the logical order:** `FROM` → `WHERE` → `GROUP BY` → `HAVING` → `SELECT` → `ORDER BY` → `LIMIT`.
+- **Write queries for readability:** keep SQL clear and expressive; let the query optimizer decide the actual execution path.
+- **Use `EXPLAIN`:** review the execution plan, then refine indexes, filters, and column lists for leaner, faster queries.
